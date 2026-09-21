@@ -66,8 +66,8 @@ Las herramientas marcadas por sección son opcionales: puedes leer la guía ente
 Clona el repositorio y lee los ficheros Markdown en tu editor o directamente en GitHub:
 
 ```bash
-git clone https://github.com/mmbalbas1132/Gu-a-de-Node.js-y-Express.git guia-nodejs-express
-cd guia-nodejs-express
+git clone https://github.com/mmbalbas1132/Gu-a-de-Node.js-y-Express.git guia-api-node-express
+cd guia-api-node-express
 ```
 
 Empieza por [`01-fundamentos/01-que-es-nodejs.md`](01-fundamentos/01-que-es-nodejs.md) y sigue el enlace **Siguiente** del final de cada página: enlazan todas las páginas en orden, de la primera a la última.
