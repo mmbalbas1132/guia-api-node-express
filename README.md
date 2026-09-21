@@ -66,7 +66,7 @@ Las herramientas marcadas por sección son opcionales: puedes leer la guía ente
 Clona el repositorio y lee los ficheros Markdown en tu editor o directamente en GitHub:
 
 ```bash
-git clone https://github.com/mmbalbas1132/Gu-a-de-Node.js-y-Express.git guia-api-node-express
+git clone https://github.com/mmbalbas1132/guia-api-node-express.git guia-api-node-express
 cd guia-api-node-express
 ```
 
