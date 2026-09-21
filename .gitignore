@@ -1,0 +1,24 @@
+# Dependencias
+node_modules/
+
+# Variables de entorno
+.env
+.env.local
+
+# Registros
+logs/
+*.log
+npm-debug.log*
+
+# Cobertura y artefactos de pruebas
+coverage/
+.nyc_output/
+
+# Editores e IDE
+.idea/
+.vscode/
+*.swp
+
+# Sistema operativo
+.DS_Store
+Thumbs.db

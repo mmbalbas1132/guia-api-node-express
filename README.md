@@ -19,6 +19,38 @@ Guía práctica para aprender a construir **APIs con Node.js y Express**, desde 
 - **Versiones actuales.** Se usa Express 5, Mongoose 9 y una versión LTS reciente de Node.js. Donde los tutoriales antiguos difieren, se señala ([Código obsoleto y errores frecuentes](10-referencias/04-codigo-obsoleto-y-errores-frecuentes.md)).
 - **Modular.** Cada página cubre un tema, declara sus prerrequisitos y termina con **Puntos clave** y un enlace a la **siguiente** página.
 
+## Qué vas a aprender
+
+Al terminar la guía serás capaz de:
+
+- **Entender Node.js por dentro:** el event loop, la asincronía, los módulos (CommonJS y ESM), los streams y el servidor HTTP nativo.
+- **Construir una API REST con Express 5:** rutas, middleware, recepción de datos, códigos de estado, manejo de errores y validación de la entrada.
+- **Proteger la API:** contraseñas con bcrypt, autenticación con JWT, autorización por roles, cabeceras con Helmet, CORS, límites de peticiones y defensa frente a inyecciones y XSS.
+- **Persistir datos:** modelado, MongoDB con Mongoose y PostgreSQL con Sequelize, incluyendo relaciones, paginación e índices.
+- **Organizar el código:** arquitectura por capas y MVC, principios SOLID y patrón repositorio.
+- **Añadir calidad:** documentación OpenAPI con Swagger, registros con Winston, pruebas automáticas con `node:test` y Supertest, caché y rendimiento.
+- **Llevarla a producción:** lista de comprobación previa, Docker, plataformas de despliegue y escalado con cluster, PM2 y NGINX.
+- **Entregar un proyecto completo:** la [API de tareas](#proyecto-final-api-de-tareas), del diseño a las pruebas.
+
+## Requisitos previos
+
+**Conocimientos.** Basta con JavaScript moderno a nivel básico: variables, funciones, arrays y objetos, desestructuración, funciones flecha y clases. Conviene tener nociones de HTTP (métodos, códigos de estado) y saber moverte por la terminal. **No hace falta experiencia previa con Node.js:** la guía empieza desde cero.
+
+**Herramientas.**
+
+| Herramienta | Necesaria | Para qué |
+|---|---|---|
+| [Node.js 22 o superior](https://nodejs.org) (LTS) y npm | Sí | Ejecutar todos los ejemplos |
+| Editor de código (VS Code, WebStorm…) | Sí | Escribir y navegar el código |
+| Git | Sí | Clonar el repositorio |
+| `curl` o un cliente HTTP (Postman, Insomnia, Bruno) | Sí | Probar los endpoints |
+| [MongoDB](https://www.mongodb.com/try/download/community) 8 (local, Docker o Atlas) | Secciones 4 y 8 | Base de datos del proyecto final |
+| [PostgreSQL](https://www.postgresql.org/download/) 17 | Sección 4 | Ejemplos con Sequelize |
+| [Docker](https://docs.docker.com/get-docker/) y Docker Compose | Secciones 6 y 8 | Empaquetar y levantar el entorno |
+| [Redis](https://redis.io/download) | Sección 9 | Ejemplos de caché |
+
+Las herramientas marcadas por sección son opcionales: puedes leer la guía entera sin instalarlas, y las pruebas del proyecto final funcionan **sin MongoDB** (usan una base de datos en memoria).
+
 ## Cómo leerla
 
 | Si quieres… | Ruta |
@@ -28,6 +60,29 @@ Guía práctica para aprender a construir **APIs con Node.js y Express**, desde 
 | Ya conoces Node.js y quieres Express 5 | 02 (empezando por [Express 5: novedades](02-express/09-express-5-novedades-y-migracion.md)) → 03 → 08 |
 | Preparar una API para producción | 03 → 06 → 09 |
 | Consultar un concepto | [Glosario](10-referencias/03-glosario.md) |
+
+## Cómo usar la guía
+
+Clona el repositorio y lee los ficheros Markdown en tu editor o directamente en GitHub:
+
+```bash
+git clone https://github.com/mmbalbas1132/Gu-a-de-Node.js-y-Express.git guia-nodejs-express
+cd guia-nodejs-express
+```
+
+Empieza por [`01-fundamentos/01-que-es-nodejs.md`](01-fundamentos/01-que-es-nodejs.md) y sigue el enlace **Siguiente** del final de cada página: enlazan todas las páginas en orden, de la primera a la última.
+
+Para ejecutar el proyecto final:
+
+```bash
+cd ejemplos/api-tareas
+npm install
+cp .env.example .env        # edita JWT_SECRET y MONGODB_URI
+npm test                    # 15 pruebas, no necesita MongoDB
+npm run dev                 # arranca la API en http://localhost:3000
+```
+
+> **Consejo:** escribe el código a mano en lugar de copiarlo, y pégalo solo para comparar. Cada página es corta a propósito para que puedas ejecutar lo que lees antes de pasar a la siguiente.
 
 ## Índice
 
@@ -152,9 +207,66 @@ Siguientes pasos, enlaces oficiales, glosario y código obsoleto.
 | 3 | [Glosario](10-referencias/03-glosario.md) | Básico | Definiciones breves de los términos clave de Node.js, Express, bases de datos, seguridad, arquitectura y despliegue usados en la guía, con enlace a la página donde se explican. |
 | 4 | [Código obsoleto y errores frecuentes](10-referencias/04-codigo-obsoleto-y-errores-frecuentes.md) | Intermedio | Patrones antiguos que siguen apareciendo en tutoriales y libros (Node.js, Express 4, Mongoose, JWT, Docker, tests) con su equivalente actual y el motivo del cambio. |
 
-## Proyecto de ejemplo
+## Proyecto final: API de tareas
 
-El código completo de la sección 08 está en [`ejemplos/api-tareas`](ejemplos/api-tareas/README.md): API REST con autenticación JWT, roles, validación, Swagger, logs, Docker y **15 pruebas automáticas** que pasan.
+La guía culmina en una **API REST de gestión de tareas** completa y ejecutable, construida paso a paso en la [sección 8](#8-proyecto-api-de-tareas). El código vive en [`ejemplos/api-tareas`](ejemplos/api-tareas/README.md).
+
+**Qué incluye**
+
+- Registro y login con contraseñas cifradas mediante hash (bcrypt) y **tokens JWT**.
+- CRUD de tareas por usuario, con **paginación**, filtros y comprobación de propiedad del recurso.
+- **Autorización por roles**: el endpoint `/usuarios` exige rol `admin`.
+- Validación de la entrada con express-validator y manejador de errores centralizado.
+- Seguridad HTTP: Helmet, CORS configurable, límite de tamaño del cuerpo y limitación de peticiones.
+- **Documentación interactiva** en `/api-docs` (Swagger UI) y registros estructurados con Winston.
+- **15 pruebas automáticas** que pasan, con `node:test`, Supertest y MongoDB en memoria.
+- `Dockerfile` y `docker-compose.yml` para levantar API y base de datos con un comando.
+
+**Ponerlo en marcha**
+
+```bash
+cd ejemplos/api-tareas
+npm install
+cp .env.example .env
+npm test                            # verifica que todo funciona
+npm run dev
+curl http://localhost:3000/salud    # {"estado":"ok"}
+```
+
+O con Docker, sin instalar MongoDB:
+
+```bash
+cd ejemplos/api-tareas
+export JWT_SECRET=un-secreto-largo-y-aleatorio
+docker compose up -d --build
+```
+
+Los detalles de configuración, variables de entorno y endpoints están en el [README del proyecto](ejemplos/api-tareas/README.md).
+
+## Estructura del repositorio
+
+```text
+.
+├── 01-fundamentos/                 11 páginas · Node.js desde cero
+├── 02-express/                      9 páginas · Express 5
+├── 03-seguridad/                    6 páginas · bcrypt, JWT, roles, Helmet
+├── 04-bases-de-datos/               4 páginas · Mongoose y Sequelize
+├── 05-arquitectura/                 4 páginas · SOLID, MVC, repositorio
+├── 06-despliegue-y-escalabilidad/   4 páginas · producción, Docker, PM2
+├── 07-tiempo-real/                  1 página  · WebSockets y Socket.io
+├── 08-proyecto-api-tareas/          3 páginas · el proyecto final
+├── 09-calidad-y-mantenimiento/      5 páginas · Swagger, logs, tests, caché
+├── 10-referencias/                  4 páginas · glosario, enlaces, errores
+├── ejemplos/
+│   └── api-tareas/                 código ejecutable del proyecto final
+│       ├── src/                    config · models · middlewares
+│       │                           controllers · routes · docs
+│       ├── tests/                  15 pruebas con node:test y Supertest
+│       ├── Dockerfile
+│       └── docker-compose.yml
+├── LICENSE                         GPL-3.0
+└── README.md                       esta página
+```
 
 ## Versiones de referencia
 
@@ -222,3 +334,7 @@ tested_on: "Node.js 22 · Express 5.2"   # con qué se verificó el contenido
 - Todo el texto es una redacción original en español, no una copia de otras obras, y se ha validado con la documentación oficial de Node.js y Express (nodejs.org y expressjs.com) y de las demás herramientas.
 - Cuando el material de partida usaba prácticas o versiones desfasadas, se han actualizado y se han documentado las diferencias.
 - Los comandos de plataformas de terceros (Heroku, Vercel, DigitalOcean…) son una guía de referencia y **no se ejecutaron**: consulta siempre su documentación vigente.
+
+## Licencia
+
+Este repositorio se distribuye bajo la **[GNU General Public License v3.0](LICENSE)**. Puedes usar, estudiar, modificar y redistribuir el material siempre que las obras derivadas mantengan la misma licencia.
