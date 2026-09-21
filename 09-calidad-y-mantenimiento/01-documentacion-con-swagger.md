@@ -28,8 +28,13 @@ npm install swagger-jsdoc swagger-ui-express
 
 ```js
 // src/docs/swagger.js
+const path = require('node:path');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+
+// swagger-jsdoc espera un patrón glob con '/', también en Windows: allí
+// path.join usa el separador nativo y glob lo interpretaría como escape.
+const rutasGlob = path.join(__dirname, '..', 'routes', '*.js').split(path.sep).join('/');
 
 const swaggerSpec = swaggerJsdoc({
   definition: {
@@ -55,7 +60,7 @@ const swaggerSpec = swaggerJsdoc({
       },
     },
   },
-  apis: [__dirname + '/../routes/*.js'],       // dónde buscar los comentarios @openapi
+  apis: [rutasGlob],                           // dónde buscar los comentarios @openapi
 });
 
 module.exports = function swaggerDocs(app) {

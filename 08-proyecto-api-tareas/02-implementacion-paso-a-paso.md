@@ -707,8 +707,13 @@ module.exports = router;
 
 ```js
 // src/docs/swagger.js
+const path = require('node:path');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+
+// swagger-jsdoc espera un patrón glob con '/', también en Windows: allí
+// path.join usa el separador nativo y glob lo interpretaría como escape.
+const rutasGlob = path.join(__dirname, '..', 'routes', '*.js').split(path.sep).join('/');
 
 const swaggerSpec = swaggerJsdoc({
   definition: {
@@ -751,7 +756,7 @@ const swaggerSpec = swaggerJsdoc({
       },
     },
   },
-  apis: [__dirname + '/../routes/*.js'],       // rutas con comentarios @openapi
+  apis: [rutasGlob],                           // rutas con comentarios @openapi
 });
 
 // Monta la documentación en /api-docs (y el JSON de la especificación en /api-docs.json)
